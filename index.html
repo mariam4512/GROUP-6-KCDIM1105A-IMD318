@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+
+        /* Navigation Styles */
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Improved Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+            min-width: 12rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            padding-top: 0.5rem;
+        }
+
+        .dropdown-container::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 0.5rem;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0.1s;
+        }
+
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animation Styles */
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Product Grid Styles */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            position: relative;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 2rem 1rem 1rem;
+            color: white;
+        }
+
+        /* Testimonial Styles */
+        .testimonial-section {
+	    font-family: Gothic;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .testimonial-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            flex: 0 0 100%;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        @media (min-width: 768px) {
+            .testimonial-card {
+                flex: 0 0 calc(50% - 1rem);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .testimonial-card {
+                flex: 0 0 calc(33.333% - 1.333rem);
+            }
+        }
+
+        .testimonial-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .testimonial-nav button {
+            pointer-events: auto;
+            position: absolute;
+            background: white;
+            border: none;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonial-nav button:hover {
+            transform: scale(1.1);
+            background-color: #f0f9ff;
+        }
+
+        .testimonial-nav .prev {
+            left: 1rem;
+        }
+
+        .testimonial-nav .next {
+            right: 1rem;
+        }
+
+        .profile-pic {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0ea5e9;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 32rem;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #0ea5e9;
+        }
+
+        .modal-title {
+	    font-family: Times New Roman;
+            color: #0ea5e9;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .assessment-section {
+            background-color: #f0f9ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .assessment-title {
+            color: #0369a1;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-footer {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0284c7;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #0ea5e9;
+            color: #0ea5e9;
+        }
+
+        .btn-outline:hover {
+            background-color: #f0f9ff;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-nav button {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md relative z-30">
+        <div class="container mx-auto px-4">
+            <!-- Logo -->
+            <div class="text-center py-6">
+                <h1 class="text-4xl font-semibold text-sky-600">Dr Care</h1>
+                <p class="text-gray-600 text-sm mt-1">Your Skin Health Matters</p>
+            </div>
+
+            <!-- Navigation with Do's & Don'ts Dropdown -->
+            <nav class="flex justify-center space-x-8 pb-4 h-12">
+                <a href="index.html" class="nav-link text-gray-700 hover:text-sky-600">Home</a>
+                <div class="dropdown-container">
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-sky-600">About Us</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="#vision" class="block px-4 py-2 hover:bg-sky-50">Vision</a>
+                        <a href="#mission" class="block px-4 py-2 hover:bg-sky-50">Mission</a>
+                        <a href="#objectives" class="block px-4 py-2 hover:bg-sky-50">Objectives</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Skin Types</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="dry-skin.html" class="block px-4 py-2 hover:bg-sky-50">Dry Skin</a>
+                        <a href="oily-skin.html" class="block px-4 py-2 hover:bg-sky-50">Oily Skin</a>
+                        <a href="combination-skin.html" class="block px-4 py-2 hover:bg-sky-50">Combination Skin</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Do's & Don'ts</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="do.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Do's</a>
+                        <a href="dont.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Don'ts</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-link text-gray-700 hover:text-sky-600">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="container mx-auto px-4 py-6 relative z-20">
+        <div class="max-w-2xl mx-auto">
+            <div class="relative">
+                <input type="search" placeholder="Search for skin care advice..."
+                    class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <i class="fas fa-search text-gray-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 animate-fade-in">
+            <div class="relative h-[500px]">
+                <div id="imageSlider" class="absolute inset-0 overflow-hidden rounded-lg">
+                    <div class="slider-container absolute inset-0 flex transition-transform duration-500">
+                        <!-- Slide 1 -->
+                        <div class="slide min-w-full h-full relative">
+                            <img src="assets/bootstrap1.jpg" alt="Natural Care" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 p-8">
+                                <div class="h-full flex flex-col justify-center max-w-2xl">
+                                    <h2 class="text-3xl font-semibold text-white mb-4">Natural Care</h2>
+                                    <p class="text-white/90 mb-4">Experience the power of natural skincare with our
+                                        expertly curated collection. Our products combine pure ingredients with
+                                        scientific expertise to deliver real results.</p>
+                                    <ul class="text-white/80 space-y-2">
+                                        <li>• Dermatologist-approved natural ingredients</li>
+                                        <li>• Sustainable and eco-friendly practices</li>
+                                        <li>• Gentle yet effective formulations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="slide min-w-full h-full relative">
+                            <img src="assets/b.jpeg" alt="Daily Care" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 p-8">
+                                <div class="h-full flex flex-col justify-center max-w-2xl">
+                                    <h2 class="text-3xl font-semibold text-white mb-4">Daily Care Routine</h2>
+                                    <p class="text-white/90 mb-4">Discover the perfect daily skincare routine tailored
+                                        to your skin type. Our step-by-step approach ensures optimal skin health and
+                                        radiance.</p>
+                                    <ul class="text-white/80 space-y-2">
+                                        <li>• Personalized skincare solutions</li>
+                                        <li>• Expert consultation available</li>
+                                        <li>• Regular skin health monitoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="slide min-w-full h-full relative">
+                            <img src="assets/bootstrap3.jpg" alt="Skin Health" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 p-8">
+                                <div class="h-full flex flex-col justify-center max-w-2xl">
+                                    <h2 class="text-3xl font-semibold text-white mb-4">Expert Skin Health</h2>
+                                    <p class="text-white/90 mb-4">Your journey to healthy skin starts with expert care.
+                                        Our team of professionals is dedicated to helping you achieve your skincare
+                                        goals.</p>
+                                    <ul class="text-white/80 space-y-2">
+                                        <li>• Advanced skin analysis</li>
+                                        <li>• Professional treatment plans</li>
+                                        <li>• Continuous support and guidance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button
+                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors"
+                        onclick="moveSlide(-1)">
+                        <i class="fas fa-chevron-left text-white text-xl"></i>
+                    </button>
+                    <button
+                        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors"
+                        onclick="moveSlide(1)">
+                        <i class="fas fa-chevron-right text-white text-xl"></i>
+                    </button>
+
+                    <!-- Navigation Dots -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                        <button class="w-2 h-2 rounded-full bg-white/50 slider-dot" onclick="goToSlide(0)"></button>
+                        <button class="w-2 h-2 rounded-full bg-white/50 slider-dot" onclick="goToSlide(1)"></button>
+                        <button class="w-2 h-2 rounded-full bg-white/50 slider-dot" onclick="goToSlide(2)"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Updated Testimonials Section -->
+    <section class="container mx-auto px-4 py-12">
+        <div class="bg-gradient-to-r from-sky-500 to-sky-600 rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-semibold text-white text-center mb-8">What Our Clients Say!</h2>
+            <div class="testimonial-section">
+                <div class="testimonial-container" id="testimonialContainer">
+                    <!-- Testimonials will be inserted here by JavaScript -->
+                </div>
+                <div class="testimonial-nav">
+                    <button class="prev" onclick="moveTestimonial(-1)">
+                        <i class="fas fa-chevron-left text-sky-500"></i>
+                    </button>
+                    <button class="next" onclick="moveTestimonial(1)">
+                        <i class="fas fa-chevron-right text-sky-500"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Skin Care Information Section -->
+    <section class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 animate-fade-in">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Understanding Skin Care</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <div class="bg-sky-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-sky-800 mb-3">What is Skin Care?</h3>
+                        <p class="text-gray-600">Skin care refers to the range of practices that support skin integrity,
+                            enhance its appearance, and relieve skin conditions. It includes proper nutrition, sun
+                            protection, and using appropriate skin products.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-sky-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-sky-800 mb-3">Why is it Important?</h3>
+                        <p class="text-gray-600">Your skin is your body's largest organ and first line of defense.
+                            Proper skin care helps maintain its protective barrier, prevents damage, and keeps you
+                            looking and feeling healthy.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-sky-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-sky-800 mb-3">Basic Skin Care Steps</h3>
+                        <p class="text-gray-600">A basic skin care routine includes cleansing, toning, moisturizing, and
+                            sun protection. Additional steps like exfoliation and treatments can be added based on
+                            specific skin needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-12 border-t">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <center><h4 class="text-lg font-semibold text-sky-600">Dr Care</h4></center>
+		    <br>
+                    <center><p class="text-gray-600">Your trusted partner in skin health and beauty. We provide expert advice
+                        and personalized skin care solutions.</p></center>
+                </div>
+
+                <div class="space-y-4">
+			<center>
+                    <h4 class="text-lg font-semibold text-sky-600">Quick Links</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li><a href="index.html" class="text-gray-600 hover:text-sky-600">Home</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:text-sky-600">About Us</a></li>
+                        <li><a href="dry-skin.html" class="text-gray-600 hover:text-sky-600">Skin Types</a></li>
+                        <li><a href="do.html" class="text-gray-600 hover:text-sky-600">Do's & Don'ts</a></li>
+			</center>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-sky-600">Contact</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li class="text-gray-600">dr.care@gmail.com</li>
+                        <li class="flex space-x-4">
+                            <a href="https://www.instagram.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.twitter.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t text-center text-gray-600">
+                <p>&copy; 2025 Dr Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-8 right-8 space-x-4">
+        <button id="prevPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-left text-sky-500"></i>
+        </button>
+        <button id="nextPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-right text-sky-500"></i>
+        </button>
+    </div>
+
+
+    <script>
+        const searchContent = [
+            {
+                title: "Dry Skin Care",
+                content: "Tips and treatments for dry skin",
+                url: "dry-skin.html"
+            },
+            {
+                title: "Oily Skin Solutions",
+                content: "Managing oily skin effectively",
+                url: "oily-skin.html"
+            },
+            {
+                title: "Combination Skin Tips",
+                content: "Balance your combination skin",
+                url: "combination-skin.html"
+            },
+            {
+                title: "Skincare Do's",
+                content: "Best practices for skin care",
+                url: "do.html"
+            },
+            {
+                title: "Skincare Don'ts",
+                content: "What to avoid in skin care",
+                url: "dont.html"
+            },
+            {
+                title: "About Us",
+                content: "Learn about Dr Care's expertise",
+                url: "about.html"
+            },
+            {
+                title: "Contact",
+                content: "Get in touch with us",
+                url: "contact.html"
+            }
+        ];
+
+        // Search functionality
+        const searchInput = document.querySelector('input[type="search"]');
+        const searchResultsContainer = document.createElement('div');
+        searchResultsContainer.className = 'absolute w-full bg-white mt-1 rounded-lg shadow-lg z-50 hidden';
+        searchInput.parentNode.appendChild(searchResultsContainer);
+
+        searchInput.addEventListener('input', function (e) {
+            const query = e.target.value.toLowerCase();
+
+            if (query.length < 2) {
+                searchResultsContainer.classList.add('hidden');
+                return;
+            }
+
+            const results = searchContent.filter(item =>
+                item.title.toLowerCase().includes(query) ||
+                item.content.toLowerCase().includes(query)
+            );
+
+            if (results.length > 0) {
+                searchResultsContainer.innerHTML = results.map(result => `
+            <a href="${result.url}" class="block p-3 hover:bg-sky-50 border-b last:border-b-0">
+                <div class="font-medium text-sky-600">${result.title}</div>
+                <div class="text-sm text-gray-600">${result.content}</div>
+            </a>
+        `).join('');
+                searchResultsContainer.classList.remove('hidden');
+            } else {
+                searchResultsContainer.innerHTML = `
+            <div class="p-3 text-gray-600">
+                No results found for "${query}"
+            </div>
+        `;
+                searchResultsContainer.classList.remove('hidden');
+            }
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!searchInput.contains(e.target) && !searchResultsContainer.contains(e.target)) {
+                searchResultsContainer.classList.add('hidden');
+            }
+        });
+
+        // Prevent search results from closing when clicking inside them
+        searchResultsContainer.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+
+        // Animation observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Testimonials functionality
+        const testimonials = [
+            {
+                name: "Sarah Johnson",
+                profession: "Skincare Enthusiast",
+                text: "Dr Care's recommendations completely transformed my skincare routine. My skin has never looked better!",
+                image: "https://randomuser.me/api/portraits/women/1.jpg"
+            },
+            {
+                name: "Michael Chen",
+                profession: "Beauty Blogger",
+                text: "The personalized skincare advice I received was incredible. The team really understands different skin types and concerns.",
+                image: "https://randomuser.me/api/portraits/men/1.jpg"
+            },
+            {
+                name: "Emma Davis",
+                profession: "Wellness Coach",
+                text: "I love how Dr Care combines science-based approach with natural skincare solutions. My clients are seeing amazing results!",
+                image: "https://randomuser.me/api/portraits/women/2.jpg"
+            },
+            {
+                name: "David Wilson",
+                profession: "Dermatologist",
+                text: "As a professional in the field, I'm impressed by the quality and effectiveness of Dr Care's product line.",
+                image: "https://randomuser.me/api/portraits/men/2.jpg"
+            }
+        ];
+
+        // Preload testimonial images
+        testimonials.forEach(testimonial => {
+            const img = new Image();
+            img.src = testimonial.image;
+        });
+
+        let currentTestimonial = 0;
+        const testimonialContainer = document.getElementById('testimonialContainer');
+        let isTransitioning = false;
+        const allCards = [];
+
+        function createTestimonialCard(testimonial) {
+            const card = document.createElement('div');
+            card.className = 'testimonial-card';
+            card.style.opacity = '0';
+            card.style.transition = 'opacity 0.3s ease';
+            card.innerHTML = `
+        <div class="flex items-center gap-4 mb-4">
+            <img src="${testimonial.image}" alt="${testimonial.name}" class="profile-pic">
+            <div>
+                <h3 class="text-lg font-semibold text-sky-600">${testimonial.name}</h3>
+                <p class="text-sm text-gray-500">${testimonial.profession}</p>
+            </div>
+        </div>
+        <div class="text-yellow-400 mb-3">★★★★★</div>
+        <p class="text-gray-600 leading-relaxed">"${testimonial.text}"</p>
+    `;
+            return card;
+        }
+
+        function initializeTestimonials() {
+            testimonialContainer.style.visibility = 'hidden';
+            testimonialContainer.innerHTML = '';
+
+            for (let i = 0; i < testimonials.length + 2; i++) {
+                const index = i % testimonials.length;
+                const card = createTestimonialCard(testimonials[index]);
+                testimonialContainer.appendChild(card);
+                allCards.push(card);
+            }
+
+            testimonialContainer.offsetHeight;
+            testimonialContainer.style.visibility = 'visible';
+            allCards.forEach(card => {
+                card.style.opacity = '1';
+            });
+
+            updateTestimonialPosition(true);
+        }
+
+        function getVisibleCardCount() {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function updateTestimonialPosition(immediate = false) {
+            const cardWidth = testimonialContainer.children[0].offsetWidth;
+            const margin = 32;
+            const offset = -currentTestimonial * (cardWidth + margin);
+
+            if (immediate) {
+                testimonialContainer.style.transition = 'none';
+                testimonialContainer.style.transform = `translateX(${offset}px)`;
+                testimonialContainer.offsetHeight;
+                testimonialContainer.style.transition = 'transform 0.5s ease-in-out';
+            } else {
+                testimonialContainer.style.transform = `translateX(${offset}px)`;
+            }
+        }
+
+        function moveTestimonial(direction) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            currentTestimonial += direction;
+            updateTestimonialPosition();
+
+            testimonialContainer.ontransitionend = () => {
+                const totalCards = testimonials.length;
+
+                if (currentTestimonial >= totalCards) {
+                    currentTestimonial = 0;
+                    updateTestimonialPosition(true);
+                } else if (currentTestimonial < 0) {
+                    currentTestimonial = totalCards - 1;
+                    updateTestimonialPosition(true);
+                }
+
+                isTransitioning = false;
+                testimonialContainer.ontransitionend = null;
+            };
+        }
+
+        // Initialize testimonials
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTestimonials();
+        });
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                initializeTestimonials();
+            }, 100);
+        });
+
+        // Auto-rotation for testimonials
+        let lastAutoRotate = 0;
+        const autoRotateInterval = 5000;
+
+        function autoRotate(timestamp) {
+            if (!lastAutoRotate) lastAutoRotate = timestamp;
+
+            if (timestamp - lastAutoRotate >= autoRotateInterval) {
+                if (!isTransitioning) {
+                    moveTestimonial(1);
+                }
+                lastAutoRotate = timestamp;
+            }
+
+            requestAnimationFrame(autoRotate);
+        }
+
+        requestAnimationFrame(autoRotate);
+
+        // Hero Section Slider functionality
+        let currentSlide = 0;
+        const sliderContainer = document.querySelector('.slider-container');
+        const dots = document.querySelectorAll('.slider-dot');
+
+        function updateSlider() {
+            sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.style.backgroundColor = index === currentSlide ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.5)';
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + 3) % 3;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // Touch support for slider
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleTouchStart(e) {
+            touchStartX = e.touches[0].clientX;
+        }
+
+        function handleTouchMove(e) {
+            touchEndX = e.touches[0].clientX;
+        }
+
+        function handleTouchEnd() {
+            const swipeThreshold = 50;
+            const difference = touchStartX - touchEndX;
+
+            if (Math.abs(difference) > swipeThreshold) {
+                moveSlide(difference > 0 ? 1 : -1);
+            }
+        }
+
+        // Add touch event listeners
+        if (sliderContainer) {
+            sliderContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+            sliderContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+            sliderContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+        }
+
+        // Auto-slide
+        setInterval(() => moveSlide(1), 5000);
+
+        // Page navigation
+        const pageOrder = [
+            'index.html',
+            'about.html',
+            'dry-skin.html',
+            'oily-skin.html',
+            'combination-skin.html',
+            'do.html',
+            'dont.html',
+            'contact.html'
+        ];
+
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const currentIndex = pageOrder.indexOf(currentPage);
+        const prevIndex = currentIndex - 1;
+        const nextIndex = currentIndex + 1;
+
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+
+        if (prevButton && nextButton) {
+            if (prevIndex >= 0) {
+                prevButton.onclick = () => window.location.href = pageOrder[prevIndex];
+                prevButton.title = `Previous: ${pageOrder[prevIndex].replace('.html', '')}`;
+            } else {
+                prevButton.style.display = 'none';
+            }
+
+            if (nextIndex < pageOrder.length) {
+                nextButton.onclick = () => window.location.href = pageOrder[nextIndex];
+                nextButton.title = `Next: ${pageOrder[nextIndex].replace('.html', '')}`;
+            } else {
+                nextButton.style.display = 'none';
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' && prevIndex >= 0) {
+                window.location.href = pageOrder[prevIndex];
+            } else if (event.key === 'ArrowRight' && nextIndex < pageOrder.length) {
+                window.location.href = pageOrder[nextIndex];
+            }
+        });
+    </script>
+</body>
+
+</html>

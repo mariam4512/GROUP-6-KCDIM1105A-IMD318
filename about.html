@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+
+        /* Navigation Styles */
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+            min-width: 12rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            padding-top: 0.5rem;
+        }
+
+        .dropdown-container::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 0.5rem;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0.1s;
+        }
+
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Team Card Styles */
+        .team-card {
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-card .expertise {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .team-card:hover .expertise {
+            max-height: 200px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        /* Animation Styles */
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .animate-delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .animate-delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .animate-delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .animate-delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .animate-delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats counter animation */
+        .counter {
+            transition: all 2s ease-out;
+        }
+
+        /* Parallax effect for company info */
+        .parallax {
+            transform: translateY(0);
+            transition: transform 0.3s ease-out;
+        }
+
+        /* Modified/Added styles */
+        .our-story-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md relative z-30">
+        <div class="container mx-auto px-4">
+            <!-- Logo -->
+            <div class="text-center py-6">
+                <h1 class="text-4xl font-semibold text-sky-600">Dr Care</h1>
+                <p class="text-gray-600 text-sm mt-1">Your Skin Health Matters</p>
+            </div>
+
+            <!-- Navigation with Do's & Don'ts Dropdown -->
+            <nav class="flex justify-center space-x-8 pb-4 h-12">
+                <a href="index.html" class="nav-link text-gray-700 hover:text-sky-600">Home</a>
+                <div class="dropdown-container">
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-sky-600">About Us</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="#vision" class="block px-4 py-2 hover:bg-sky-50">Vision</a>
+                        <a href="#mission" class="block px-4 py-2 hover:bg-sky-50">Mission</a>
+                        <a href="#objectives" class="block px-4 py-2 hover:bg-sky-50">Objectives</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Skin Types</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="dry-skin.html" class="block px-4 py-2 hover:bg-sky-50">Dry Skin</a>
+                        <a href="oily-skin.html" class="block px-4 py-2 hover:bg-sky-50">Oily Skin</a>
+                        <a href="combination-skin.html" class="block px-4 py-2 hover:bg-sky-50">Combination Skin</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Do's & Don'ts</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="do.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Do's</a>
+                        <a href="dont.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Don'ts</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-link text-gray-700 hover:text-sky-600">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="container mx-auto px-4 py-8 animate-fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <i class="fas fa-users text-4xl text-sky-500 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-800"><span class="counter" data-target="5000">100</span>+</h3>
+                <p class="text-gray-600">Happy Clients</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <i class="fas fa-certificate text-4xl text-sky-500 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-800"><span class="counter" data-target="15">3</span>+</h3>
+                <p class="text-gray-600">Years Experience</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <i class="fas fa-award text-4xl text-sky-500 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-800"><span class="counter" data-target="20">1</span>+</h3>
+                <p class="text-gray-600">Awards Won</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <i class="fas fa-smile text-4xl text-sky-500 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-800"><span class="counter" data-target="98">98</span>%</h3>
+                <p class="text-gray-600">Satisfaction Rate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modified Company Information Section -->
+    <section class="container mx-auto px-4 py-12">
+        <div class="our-story-section p-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Our Story</h2>
+                    <p class="text-gray-600">Founded in 2023, Dr Care has been at the forefront of innovative skincare
+                        solutions, combining cutting-edge research with personalized care approaches.</p>
+                </div>
+
+                <div id="vision" class="content-card">
+                    <h3 class="text-2xl font-semibold text-sky-600 mb-4">Our Vision</h3>
+                    <p class="text-gray-600">To be the leading provider of personalized skincare solutions, empowering
+                        individuals to achieve their healthiest skin through science-based care and education.</p>
+                </div>
+
+                <div id="mission" class="content-card">
+                    <h3 class="text-2xl font-semibold text-sky-600 mb-4">Our Mission</h3>
+                    <p class="text-gray-600">To deliver exceptional skincare guidance and solutions that are
+                        personalized, accessible, and based on the latest dermatological research, helping our clients
+                        achieve and maintain healthy, radiant skin.</p>
+                </div>
+
+                <div id="objectives" class="content-card">
+                    <h3 class="text-2xl font-semibold text-sky-600 mb-4">Our Objectives</h3>
+                    <ul class="text-gray-600 space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-sky-500 mt-1 mr-3"></i>
+                            <span>Provide personalized skincare solutions for every skin type</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-sky-500 mt-1 mr-3"></i>
+                            <span>Educate clients about proper skin care practices</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-sky-500 mt-1 mr-3"></i>
+                            <span>Stay current with the latest dermatological research</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-sky-500 mt-1 mr-3"></i>
+                            <span>Promote healthy skincare habits and lifestyle choices</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section with Centered Layout -->
+    <section class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-semibold text-gray-800 text-center mb-8">Meet Our Expert Team</h2>
+        <!-- Using flex instead of grid for better centering control -->
+        <div class="flex flex-wrap justify-center gap-8">
+            <!-- Team Member 1 -->
+            <div
+                class="team-card bg-white rounded-xl shadow-lg p-6 text-center w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm">
+                <div
+                    class="w-32 h-32 bg-sky-100 rounded-full border-4 border-sky-200 mx-auto mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-sky-600">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-sky-600">Dr. Siti Aisyah Binti Abdul Rahim</h3>
+                <p class="text-gray-500 mb-2">Dermatologist</p>
+                <p class="text-gray-600 text-sm mb-1">Matrix No.: 2022837632</p>
+                <p class="text-gray-600 text-sm mb-3">MBBS (UM)</p>
+                <p class="text-gray-600 text-sm">Specialized in skincare for dry and sensitive skin, offering solutions
+                    to maintain hydration and repair the skin barrier</p>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div
+                class="team-card bg-white rounded-xl shadow-lg p-6 text-center w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm">
+                <div
+                    class="w-32 h-32 bg-sky-100 rounded-full border-4 border-sky-200 mx-auto mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-sky-600">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-sky-600">Dr. Fathen Nur Aribah Binti Zulkefli</h3>
+                <p class="text-gray-500 mb-2">Beauty Consultant</p>
+                <p class="text-gray-600 text-sm mb-1">Matrix No.: 2022877948</p>
+                <p class="text-gray-600 text-sm mb-3">Certified Beauty Consultant (CIDESCO)</p>
+                <p class="text-gray-600 text-sm">Expert in oily skin management, focusing on controlling sebum
+                    production and minimizing acne breakouts</p>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div
+                class="team-card bg-white rounded-xl shadow-lg p-6 text-center w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm">
+                <div
+                    class="w-32 h-32 bg-sky-100 rounded-full border-4 border-sky-200 mx-auto mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-sky-600">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-sky-600">Dr. Siti Mariam Binti Abdul Rahim</h3>
+                <p class="text-gray-500 mb-2">Skincare Specialist</p>
+                <p class="text-gray-600 text-sm mb-1">Matrix No.: 2022822896</p>
+                <p class="text-gray-600 text-sm mb-3">Diploma in Cosmetology (KLMUC)</p>
+                <p class="text-gray-600 text-sm">Proficient in combination skin care, creating balanced routines to
+                    address uneven skin conditions</p>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div
+                class="team-card bg-white rounded-xl shadow-lg p-6 text-center w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm">
+                <div
+                    class="w-32 h-32 bg-sky-100 rounded-full border-4 border-sky-200 mx-auto mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-sky-600">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-sky-600">Dr. Nur Athirah Binti Abdul Ghani</h3>
+                <p class="text-gray-500 mb-2">Aesthetician</p>
+                <p class="text-gray-600 text-sm mb-1">Matrix No.: 2022877478</p>
+                <p class="text-gray-600 text-sm mb-3">Advanced Diploma in Skincare Therapy</p>
+                <p class="text-gray-600 text-sm">Focused on anti-aging and hydration strategies, helping clients achieve
+                    radiant, youthful skin</p>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div
+                class="team-card bg-white rounded-xl shadow-lg p-6 text-center w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm">
+                <div
+                    class="w-32 h-32 bg-sky-100 rounded-full border-4 border-sky-200 mx-auto mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-sky-600">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-sky-600">Dr. Nurul Hasanah Binti Zulkhairi</h3>
+                <p class="text-gray-500 mb-2">Beauty Educator</p>
+                <p class="text-gray-600 text-sm mb-1">Matrix No.: 2022839344</p>
+                <p class="text-gray-600 text-sm mb-3">Diploma in Professional Skincare</p>
+                <p class="text-gray-600 text-sm">Skin analysis and consultation, specializing in educating clients on
+                    the best products and techniques for all skin types</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section with Interactive Map -->
+    <section class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 animate-fade-in">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="w-full md:w-1/3">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Visit Us</h2>
+                    <div class="space-y-4">
+                        <p class="flex items-center text-gray-600">
+                            <i class="fas fa-map-marker-alt text-sky-500 mr-2"></i>
+                            Kuala Lumpur, Malaysia
+                        </p>
+                        <p class="flex items-center text-gray-600">
+                            <i class="fas fa-clock text-sky-500 mr-2"></i>
+                            Mon - Fri: 9:00 AM - 6:00 PM
+                        </p>
+                        <p class="flex items-center text-gray-600">
+                            <i class="fas fa-envelope text-sky-500 mr-2"></i>
+                            dr.care@gmail.com
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7722863131674!2d101.6892443!3d3.1569166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc49c701efeae7%3A0xf4d98e5b2118286d!2sKuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur%2C%20Malaysia!5e0!3m2!1sen!2s!4v1662043692492!5m2!1sen!2s"
+                        class="w-full h-96 rounded-lg" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-8 right-8 space-x-4">
+        <button id="prevPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-left text-sky-500"></i>
+        </button>
+        <button id="nextPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-right text-sky-500"></i>
+        </button>
+    </div>
+
+ <!-- Footer -->
+    <footer class="bg-white mt-12 border-t">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <center><h4 class="text-lg font-semibold text-sky-600">Dr Care</h4></center>
+		    <br>
+                    <center><p class="text-gray-600">Your trusted partner in skin health and beauty. We provide expert advice
+                        and personalized skin care solutions.</p></center>
+                </div>
+
+                <div class="space-y-4">
+			<center>
+                    <h4 class="text-lg font-semibold text-sky-600">Quick Links</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li><a href="index.html" class="text-gray-600 hover:text-sky-600">Home</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:text-sky-600">About Us</a></li>
+                        <li><a href="dry-skin.html" class="text-gray-600 hover:text-sky-600">Skin Types</a></li>
+                        <li><a href="do.html" class="text-gray-600 hover:text-sky-600">Do's & Don'ts</a></li>
+			</center>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-sky-600">Contact</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li class="text-gray-600">dr.care@gmail.com</li>
+                        <li class="flex space-x-4">
+                            <a href="https://www.instagram.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.twitter.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t text-center text-gray-600">
+                <p>&copy; 2025 Dr Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        const options = {
+            threshold: 1,
+            rootMargin: "0px"
+        };
+
+        const counterObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    const updateCounter = () => {
+                        const count = +counter.innerText;
+                        const increment = target / 200;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + increment);
+                            setTimeout(updateCounter, 10);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCounter();
+                    observer.unobserve(entry.target);
+
+                }
+            });
+        }, options);
+
+        // Define the page order
+        const pageOrder = [
+            'index.html',
+            'about.html',
+            'dry-skin.html',
+            'oily-skin.html',
+            'combination-skin.html',
+            'do.html',
+            'dont.html',
+            'contact.html'
+        ];
+
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+        // Find current page index
+        const currentIndex = pageOrder.indexOf(currentPage);
+
+        // Get previous and next page indices
+        const prevIndex = currentIndex - 1;
+        const nextIndex = currentIndex + 1;
+
+        // Get the button elements
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+
+        // Handle previous page navigation
+        if (prevIndex >= 0) {
+            prevButton.onclick = () => window.location.href = pageOrder[prevIndex];
+            prevButton.title = `Previous: ${pageOrder[prevIndex].replace('.html', '')}`;
+        } else {
+            prevButton.style.display = 'none';
+        }
+
+        // Handle next page navigation
+        if (nextIndex < pageOrder.length) {
+            nextButton.onclick = () => window.location.href = pageOrder[nextIndex];
+            nextButton.title = `Next: ${pageOrder[nextIndex].replace('.html', '')}`;
+        } else {
+            nextButton.style.display = 'none';
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' && prevIndex >= 0) {
+                window.location.href = pageOrder[prevIndex];
+            } else if (event.key === 'ArrowRight' && nextIndex < pageOrder.length) {
+                window.location.href = pageOrder[nextIndex];
+            }
+        });
+    </script>
+</body>
+
+</html>

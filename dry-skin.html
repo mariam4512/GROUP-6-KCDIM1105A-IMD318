@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+            min-width: 12rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            padding-top: 0.5rem;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #0ea5e9;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 16px;
+            width: 2px;
+            height: calc(100% - 16px);
+            background-color: #e5e7eb;
+        }
+    </style>
+    <title>Dr Care - Dry Skin Care Guide</title>
+</head>
+
+<body class="min-h-screen">
+    <!-- Sound Control -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="soundToggle" class="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-volume-up text-sky-500"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md relative z-30">
+        <div class="container mx-auto px-4">
+            <!-- Logo -->
+            <div class="text-center py-6">
+                <h1 class="text-4xl font-semibold text-sky-600">Dr Care</h1>
+                <p class="text-gray-600 text-sm mt-1">Your Skin Health Matters</p>
+            </div>
+
+            <!-- Navigation with Do's & Don'ts Dropdown -->
+            <nav class="flex justify-center space-x-8 pb-4 h-12">
+                <a href="index.html" class="nav-link text-gray-700 hover:text-sky-600">Home</a>
+                <div class="dropdown-container">
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-sky-600">About Us</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="#vision" class="block px-4 py-2 hover:bg-sky-50">Vision</a>
+                        <a href="#mission" class="block px-4 py-2 hover:bg-sky-50">Mission</a>
+                        <a href="#objectives" class="block px-4 py-2 hover:bg-sky-50">Objectives</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Skin Types</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="dry-skin.html" class="block px-4 py-2 hover:bg-sky-50">Dry Skin</a>
+                        <a href="oily-skin.html" class="block px-4 py-2 hover:bg-sky-50">Oily Skin</a>
+                        <a href="combination-skin.html" class="block px-4 py-2 hover:bg-sky-50">Combination Skin</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Do's & Don'ts</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="do.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Do's</a>
+                        <a href="dont.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Don'ts</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-link text-gray-700 hover:text-sky-600">Contact</a>
+            </nav>
+        </div>
+    </header>
+    <!-- Search Bar -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-2xl mx-auto">
+            <div class="relative">
+                <input type="text" placeholder="Search for dry skin care advice..."
+                    class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <i class="fas fa-search text-gray-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="bg-white rounded-3xl shadow-lg overflow-hidden mb-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="relative flex justify-center items-center bg-gray-50 h-[480px]">
+                    <!-- Fixed container height -->
+                    <div class="relative w-[min(100%,_270px)] h-[480px]"> <!-- Fixed width and height -->
+                        <video class="absolute inset-0 w-full h-full object-cover rounded-lg shadow-md" autoplay muted
+                            loop playsinline controls>
+                            <source src="video/dry skin.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Lighter overlay gradient -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-sky-300/10 to-transparent pointer-events-none rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8 lg:p-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Understanding Dry Skin</h2>
+                    <div class="space-y-6">
+                        <div class="bg-sky-50 rounded-2xl p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Characteristics</h3>
+                            <ul class="space-y-3 text-gray-600">
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-check text-sky-400"></i>
+                                    Feels tight and uncomfortable
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-check text-sky-400"></i>
+                                    Appears flaky or rough
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-check text-sky-400"></i>
+                                    Shows fine lines easily
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-check text-sky-400"></i>
+                                    Prone to irritation and redness
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dry Skin Example -->
+        <section class="bg-white rounded-3xl shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6">What Dry Skin Looks Like</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="relative rounded-2xl overflow-hidden flex justify-center">
+                    <div class="relative w-[240px] h-[320px]"> <!-- Adjusted for vertical image -->
+                        <img src="assets/dryskin.jpg" alt="Dry Skin Example"
+                            class="w-full h-full object-cover rounded-2xl">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-sky-900/70 to-transparent p-4">
+                            <p class="text-sky-50 text-sm">Real example of dry skin condition</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-sky-50/50 rounded-2xl p-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">Common Signs to Look For:</h4>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check text-sky-400 mt-1"></i>
+                                <div>
+                                    <span class="font-medium">Flaking and Roughness:</span>
+                                    <p class="mt-0.5">Notice the visible flaking and uneven texture</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check text-sky-400 mt-1"></i>
+                                <div>
+                                    <span class="font-medium">Fine Lines:</span>
+                                    <p class="mt-0.5">Dehydrated skin shows more pronounced lines</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check text-sky-400 mt-1"></i>
+                                <div>
+                                    <span class="font-medium">Color Changes:</span>
+                                    <p class="mt-0.5">Areas of redness or uneven skin tone</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-sky-50/50 rounded-2xl p-4">
+                        <p class="text-gray-600 text-sm"><i class="fas fa-info-circle text-sky-400 mr-2"></i>If your
+                            skin shows similar signs, follow our recommended care routine below.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Care Timeline -->
+        <section class="bg-white rounded-3xl shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-8">24-Hour Care Routine</h3>
+            <div class="space-y-8">
+                <div class="timeline-item pb-8">
+                    <span class="text-sky-600 font-semibold">7:00 AM - Morning Routine</span>
+                    <ul class="mt-4 text-gray-600 space-y-2">
+                        <li>• Gentle cream cleanser</li>
+                        <li>• Hydrating toner</li>
+                        <li>• Vitamin C serum</li>
+                        <li>• Rich moisturizer</li>
+                        <li>• Sunscreen SPF 30+</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item pb-8">
+                    <span class="text-sky-600 font-semibold">2:00 PM - Midday Care</span>
+                    <ul class="mt-4 text-gray-600 space-y-2">
+                        <li>• Facial mist for hydration</li>
+                        <li>• Reapply sunscreen</li>
+                        <li>• Apply lip balm</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="text-sky-600 font-semibold">9:00 PM - Evening Routine</span>
+                    <ul class="mt-4 text-gray-600 space-y-2">
+                        <li>• Oil-based cleanser</li>
+                        <li>• Cream cleanser</li>
+                        <li>• Hydrating essence</li>
+                        <li>• Night cream</li>
+                        <li>• Face oil</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Recommendations -->
+        <section class="bg-white rounded-3xl shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-8">Recommended Products</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white border rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <img src="assets/cleanser do.jpeg" alt="Cleanser" class="w-full rounded-lg mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-2">Gentle Cream Cleanser</h4>
+                    <p class="text-gray-600">Non-stripping formula with ceramides and hyaluronic acid</p>
+                    <ul class="mt-4 text-gray-600 text-sm space-y-2">
+                        <li>• Sulfate-free formula</li>
+                        <li>• pH-balanced</li>
+                        <li>• Fragrance-free</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <img src="assets/moiseturizer do.jpeg" alt="Moisturizer" class="w-full rounded-lg mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-2">Rich Moisturizer</h4>
+                    <p class="text-gray-600">Deep hydration with hyaluronic acid and shea butter</p>
+                    <ul class="mt-4 text-gray-600 text-sm space-y-2">
+                        <li>• 48-hour hydration</li>
+                        <li>• Non-comedogenic</li>
+                        <li>• With ceramides</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <img src="assets/face oil do.jpeg" alt="Face Oil" class="w-full rounded-lg mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-2">Nourishing Face Oil</h4>
+                    <p class="text-gray-600">Blend of jojoba, rosehip, and argan oils</p>
+                    <ul class="mt-4 text-gray-600 text-sm space-y-2">
+                        <li>• Rich in antioxidants</li>
+                        <li>• Fast-absorbing</li>
+                        <li>• Suitable for sensitive skin</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+ <!-- Footer -->
+    <footer class="bg-white mt-12 border-t">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <center><h4 class="text-lg font-semibold text-sky-600">Dr Care</h4></center>
+		    <br>
+                    <center><p class="text-gray-600">Your trusted partner in skin health and beauty. We provide expert advice
+                        and personalized skin care solutions.</p></center>
+                </div>
+
+                <div class="space-y-4">
+			<center>
+                    <h4 class="text-lg font-semibold text-sky-600">Quick Links</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li><a href="index.html" class="text-gray-600 hover:text-sky-600">Home</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:text-sky-600">About Us</a></li>
+                        <li><a href="dry-skin.html" class="text-gray-600 hover:text-sky-600">Skin Types</a></li>
+                        <li><a href="do.html" class="text-gray-600 hover:text-sky-600">Do's & Don'ts</a></li>
+			</center>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-sky-600">Contact</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li class="text-gray-600">dr.care@gmail.com</li>
+                        <li class="flex space-x-4">
+                            <a href="https://www.instagram.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.twitter.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t text-center text-gray-600">
+                <p>&copy; 2025 Dr Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-8 right-8 space-x-4">
+        <button id="prevPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-left text-sky-500"></i>
+        </button>
+        <button id="nextPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-right text-sky-500"></i>
+        </button>
+    </div>
+    <script>
+        const soundToggle = document.getElementById('soundToggle');
+        let isMuted = false;
+        let audioContext = null;
+        let masterGainNode = null;
+
+        // Initialize audio system
+        function initAudioSystem() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                masterGainNode = audioContext.createGain();
+                masterGainNode.connect(audioContext.destination);
+            }
+        }
+
+        // Update all media elements (both audio and video)
+        function updateAllMediaElements() {
+            // Select both audio and video elements regardless of class
+            document.querySelectorAll('audio, video').forEach(media => {
+                media.muted = isMuted;
+            });
+        }
+
+        // Update the sound toggle event listener
+        soundToggle.addEventListener('click', () => {
+            isMuted = !isMuted;
+            const icon = soundToggle.querySelector('i');
+            icon.className = isMuted ? 'fas fa-volume-mute text-sky-500' : 'fas fa-volume-up text-sky-500';
+
+            // Update master volume
+            if (masterGainNode) {
+                masterGainNode.gain.value = isMuted ? 0 : 1;
+            }
+
+            // Update all media elements
+            updateAllMediaElements();
+        });
+
+        // Function to play sounds through the audio system
+        function playSound(url) {
+            if (!audioContext) initAudioSystem();
+
+            fetch(url)
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                .then(audioBuffer => {
+                    const sourceNode = audioContext.createBufferSource();
+                    sourceNode.buffer = audioBuffer;
+                    sourceNode.connect(masterGainNode);
+                    sourceNode.start();
+                })
+                .catch(error => console.error('Error playing sound:', error));
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initAudioSystem();
+            if (masterGainNode) {
+                masterGainNode.gain.value = isMuted ? 0 : 1;
+            }
+            // Set initial state for any media elements
+            updateAllMediaElements();
+        });
+
+
+        // Search functionality
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    section.style.display = 'block';
+                    if (searchTerm.length > 2) {
+                        section.classList.add('animate-fade-in');
+                    }
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Define the page order
+        const pageOrder = [
+            'index.html',
+            'about.html',
+            'dry-skin.html',
+            'oily-skin.html',
+            'combination-skin.html',
+            'do.html',
+            'dont.html',
+            'contact.html'
+        ];
+
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+        // Find current page index
+        const currentIndex = pageOrder.indexOf(currentPage);
+
+        // Get previous and next page indices
+        const prevIndex = currentIndex - 1;
+        const nextIndex = currentIndex + 1;
+
+        // Get the button elements
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+
+        // Handle previous page navigation
+        if (prevIndex >= 0) {
+            prevButton.onclick = () => window.location.href = pageOrder[prevIndex];
+            prevButton.title = `Previous: ${pageOrder[prevIndex].replace('.html', '')}`;
+        } else {
+            prevButton.style.display = 'none';
+        }
+
+        // Handle next page navigation
+        if (nextIndex < pageOrder.length) {
+            nextButton.onclick = () => window.location.href = pageOrder[nextIndex];
+            nextButton.title = `Next: ${pageOrder[nextIndex].replace('.html', '')}`;
+        } else {
+            nextButton.style.display = 'none';
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' && prevIndex >= 0) {
+                window.location.href = pageOrder[prevIndex];
+            } else if (event.key === 'ArrowRight' && nextIndex < pageOrder.length) {
+                window.location.href = pageOrder[nextIndex];
+            }
+        });
+    </script>
+</body>
+
+</html>

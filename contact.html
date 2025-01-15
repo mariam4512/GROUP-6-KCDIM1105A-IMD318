@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+            min-width: 12rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            padding-top: 0.5rem;
+        }
+
+        .dropdown-container::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 0.5rem;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0.1s;
+        }
+
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background-color: #0ea5e9;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Sound Control -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="soundToggle" class="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-volume-up text-sky-500"></i>
+        </button>
+    </div>
+    <!-- Header -->
+    <header class="bg-white shadow-md relative z-30">
+        <div class="container mx-auto px-4">
+            <!-- Logo -->
+            <div class="text-center py-6">
+                <h1 class="text-4xl font-semibold text-sky-600">Dr Care</h1>
+                <p class="text-gray-600 text-sm mt-1">Your Skin Health Matters</p>
+            </div>
+
+            <!-- Navigation with Do's & Don'ts Dropdown -->
+            <nav class="flex justify-center space-x-8 pb-4 h-12">
+                <a href="index.html" class="nav-link text-gray-700 hover:text-sky-600">Home</a>
+                <div class="dropdown-container">
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-sky-600">About Us</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="#vision" class="block px-4 py-2 hover:bg-sky-50">Vision</a>
+                        <a href="#mission" class="block px-4 py-2 hover:bg-sky-50">Mission</a>
+                        <a href="#objectives" class="block px-4 py-2 hover:bg-sky-50">Objectives</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Skin Types</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="dry-skin.html" class="block px-4 py-2 hover:bg-sky-50">Dry Skin</a>
+                        <a href="oily-skin.html" class="block px-4 py-2 hover:bg-sky-50">Oily Skin</a>
+                        <a href="combination-skin.html" class="block px-4 py-2 hover:bg-sky-50">Combination Skin</a>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <a href="#" class="nav-link text-gray-700 hover:text-sky-600">Do's & Don'ts</a>
+                    <div class="dropdown-menu bg-white shadow-lg rounded-md">
+                        <a href="do.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Do's</a>
+                        <a href="dont.html" class="block px-4 py-2 hover:bg-sky-50">Skincare Don'ts</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-link text-gray-700 hover:text-sky-600">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-center space-x-4 mb-8">
+            <button class="tab-button active px-6 py-3 rounded-lg bg-white shadow-md" data-tab="social">
+                <i class="fas fa-share-alt mr-2"></i>Social Connect
+            </button>
+            <button class="tab-button px-6 py-3 rounded-lg bg-white shadow-md" data-tab="location">
+                <i class="fas fa-map-marker-alt mr-2"></i>Location
+            </button>
+        </div>
+
+        <!-- Social Connect Section -->
+        <div id="socialTab" class="tab-content animate-fade-in">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+                <a href="https://www.x.com" class="social-icon block">
+                    <div class="bg-gradient-to-r from-blue-400 to-pink-600 p-8 rounded-lg text-black text-center">
+                        <i class="fab fa-x text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">x</h3>
+                        <p class="opacity-75">Daily skincare tips</p>
+                        <span class="inline-block mt-4 text-sm bg-white/20 px-4 py-2 rounded-full">@drcare</span>
+                    </div>
+                </a>
+		<a href="https://www.facebook.com" class="social-icon block">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 rounded-lg text-white text-center">
+                        <i class="fab fa-facebook text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Facebook</h3>
+                        <p class="opacity-75">Join our community</p>
+                        <span
+                            class="inline-block mt-4 text-sm bg-white/20 px-4 py-2 rounded-full">@drcareofficial</span>
+                    </div>
+		</a>
+		<a href="https://www.instagram.com" class="social-icon block">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-8 rounded-lg text-white text-center">
+                        <i class="fab fa-instagram text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Instagram</h3>
+                        <p class="opacity-75">Follow our skincare journey</p>
+                        <span class="inline-block mt-4 text-sm bg-white/20 px-4 py-2 rounded-full">@dr.care</span>
+                    </div>
+                </a>
+            </div>
+            <div class="max-w-4xl mx-auto mt-8 bg-white rounded-xl shadow-lg p-8">
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Connect via Email</h3>
+                    <div class="inline-flex items-center space-x-2 bg-sky-50 px-6 py-3 rounded-lg">
+                        <i class="far fa-envelope text-sky-500"></i>
+                        <a href="mailto:dr.care@gmail.com" class="text-sky-500 hover:text-sky-600">dr.care@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Location Section -->
+        <div id="locationTab" class="tab-content hidden">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="aspect-w-16 aspect-h-9">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7722863131674!2d101.6892443!3d3.1569166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc49c701efeae7%3A0xf4d98e5b2118286d!2sKuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur%2C%20Malaysia!5e0!3m2!1sen!2s!4v1662043692492!5m2!1sen!2s"
+                        class="w-full h-96" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Visit Our Location</h3>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-map-marker-alt text-sky-500 mt-1"></i>
+                        <div>
+                            <p class="text-gray-600">Kuala Lumpur City Centre</p>
+                            <p class="text-gray-600">Federal Territory of Kuala Lumpur</p>
+                            <p class="text-gray-600">Malaysia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-8 right-8 space-x-4">
+        <button id="prevPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-left text-sky-500"></i>
+        </button>
+        <button id="nextPage" class="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100">
+            <i class="fas fa-arrow-right text-sky-500"></i>
+        </button>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-white mt-12 border-t">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <center><h4 class="text-lg font-semibold text-sky-600">Dr Care</h4></center>
+		    <br>
+                    <center><p class="text-gray-600">Your trusted partner in skin health and beauty. We provide expert advice
+                        and personalized skin care solutions.</p></center>
+                </div>
+
+                <div class="space-y-4">
+                    <center><h4 class="text-lg font-semibold text-sky-600">Quick Links</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li><a href="index.html" class="text-gray-600 hover:text-sky-600">Home</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:text-sky-600">About Us</a></li>
+                        <li><a href="dry-skin.html" class="text-gray-600 hover:text-sky-600">Skin Types</a></li>
+                        <li><a href="do.html" class="text-gray-600 hover:text-sky-600">Do's & Don'ts</a></li>
+			</center>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-sky-600">Contact</h4>
+                    <ul class="space-y-2">
+			<br>
+                        <li class="text-gray-600">dr.care@gmail.com</li>
+                        <li class="flex space-x-4">
+                            <a href="https://www.instagram.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.twitter.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com" class="text-gray-600 hover:text-sky-600"><i class="fab fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t text-center text-gray-600">
+                <p>&copy; 2025 Dr Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Show social tab by default
+        document.getElementById('socialTab').classList.remove('hidden');
+        document.getElementById('socialTab').classList.add('animate-fade-in');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and add to clicked button
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('animate-fade-in');
+                });
+
+                // Show selected tab content
+                const targetTab = document.getElementById(`${button.dataset.tab}Tab`);
+                targetTab.classList.remove('hidden');
+
+                // Add small delay before showing animation
+                setTimeout(() => {
+                    targetTab.classList.add('animate-fade-in');
+                }, 50);
+            });
+        });
+
+        // Sound Control
+        const soundToggle = document.getElementById('soundToggle');
+        let isMuted = false;
+
+        soundToggle.addEventListener('click', () => {
+            isMuted = !isMuted;
+            const icon = soundToggle.querySelector('i');
+            icon.className = isMuted ? 'fas fa-volume-mute text-sky-500' : 'fas fa-volume-up text-sky-500';
+        });
+
+        // Social Media Hover Effects
+        const socialIcons = document.querySelectorAll('.social-icon');
+
+        socialIcons.forEach(icon => {
+            icon.addEventListener('mouseover', () => {
+                icon.style.transform = 'translateY(-5px) scale(1.05)';
+                icon.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            });
+
+            icon.addEventListener('mouseout', () => {
+                icon.style.transform = 'translateY(0) scale(1)';
+                icon.style.boxShadow = 'none';
+            });
+        });
+
+        // Add page load animation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 0.5s ease-in';
+            }, 100);
+        });
+
+        // Play success sound function
+        function playSuccessSound() {
+            const audio = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+NFRUWQKXv/1vcqO/h+W1uIqK1CpE279CCh4kYfk...');
+            audio.play();
+        }
+
+        // Define the page order
+        const pageOrder = [
+            'index.html',
+            'about.html',
+            'dry-skin.html',
+            'oily-skin.html',
+            'combination-skin.html',
+            'do.html',
+            'dont.html',
+            'contact.html'
+        ];
+
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+        // Find current page index
+        const currentIndex = pageOrder.indexOf(currentPage);
+
+        // Get previous and next page indices
+        const prevIndex = currentIndex - 1;
+        const nextIndex = currentIndex + 1;
+
+        // Get the button elements
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+
+        // Handle previous page navigation
+        if (prevIndex >= 0) {
+            prevButton.onclick = () => window.location.href = pageOrder[prevIndex];
+            prevButton.title = `Previous: ${pageOrder[prevIndex].replace('.html', '')}`;
+        } else {
+            prevButton.style.display = 'none';
+        }
+
+        // Handle next page navigation
+        if (nextIndex < pageOrder.length) {
+            nextButton.onclick = () => window.location.href = pageOrder[nextIndex];
+            nextButton.title = `Next: ${pageOrder[nextIndex].replace('.html', '')}`;
+        } else {
+            nextButton.style.display = 'none';
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' && prevIndex >= 0) {
+                window.location.href = pageOrder[prevIndex];
+            } else if (event.key === 'ArrowRight' && nextIndex < pageOrder.length) {
+                window.location.href = pageOrder[nextIndex];
+            }
+        });
+    </script>
+</body>
+
+</html>
